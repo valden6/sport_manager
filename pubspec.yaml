@@ -24,8 +24,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-  rename: ^2.0.1
+  flutter_lints: ^2.0.1
+  rename: ^2.1.1
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  ios: true
+  image_path_ios: "assets/icon.png"
 
 flutter:
 

@@ -17,5 +17,7 @@ If you have ideas to improves the app, feel free to make a request.
         • Java version Java(TM) SE Runtime Environment (build 1.8.0_331-b09)
 
 ## Version
+### [1.0.1] 
+Rename app + Adding custom launch icon
 ### [1.0.0] 
 Initialization of the repository + base app
