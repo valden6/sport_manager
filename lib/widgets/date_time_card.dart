@@ -30,7 +30,7 @@ class _DateTimeCardState extends State<DateTimeCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

@@ -20,8 +20,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme.copyWith(
         primaryColor: Colors.white,
-        backgroundColor: Colors.grey[100],
         colorScheme: theme.colorScheme.copyWith(
+          background: Colors.grey[100],
           primary: Colors.black,
           secondary: Colors.white,
           tertiary: const Color.fromARGB(255, 131, 215, 253)
