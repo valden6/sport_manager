@@ -4,10 +4,10 @@ const String _storageKey = "Prefs_";
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 class WeightStorage {
-
   Future<double?> getWeight() async {
     return _getApplicationSavedInformation();
   }
+
   Future<bool> setWeight(double weight) async {
     return _setApplicationSavedInformation(weight);
   }
@@ -16,7 +16,7 @@ class WeightStorage {
     final SharedPreferences prefs = await _prefs;
     double? weight;
     final String? storage = prefs.getString("${_storageKey}Weight");
-    if(storage != null){
+    if (storage != null) {
       weight = double.parse(storage);
     }
     return weight;
@@ -32,7 +32,6 @@ class WeightStorage {
     return _weightStorage;
   }
   WeightStorage._internal();
-
 }
 
 WeightStorage weightStorage = WeightStorage();

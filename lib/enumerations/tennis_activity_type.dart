@@ -1,11 +1,10 @@
 enum TennisActivityType {
   double,
   simple,
-  lessons
+  lessons,
 }
 
 extension TennisActivityTypeExtension on TennisActivityType {
-
   String get name {
     switch (this) {
       case TennisActivityType.lessons:
@@ -38,5 +37,4 @@ extension TennisActivityTypeExtension on TennisActivityType {
         return 133;
     }
   }
-
 }

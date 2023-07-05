@@ -17,6 +17,8 @@ If you have ideas to improves the app, feel free to make a request.
         • Java version Java(TM) SE Runtime Environment (build 1.8.0_331-b09)
 
 ## Version
+### [1.1.0] 
+Adding split-running timer + Upgrading project to the last version of flutter
 ### [1.0.2] 
 Upgrading project to the last version of flutter
 ### [1.0.1] 

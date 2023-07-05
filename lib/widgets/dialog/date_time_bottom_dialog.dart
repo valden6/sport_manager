@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 
 class DateTimeBottomDialog {
-
   Future<DateTime?> settingModalBottomSheet({required BuildContext context, DateTime? minimumDate}) async {
-
     DateTime? dateChoose;
 
     await showModalBottomSheet(
@@ -16,11 +14,11 @@ class DateTimeBottomDialog {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
       ),
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return Wrap(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 25,right: 25,top: 25),
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
               child: Row(
                 children: [
                   GestureDetector(
@@ -32,19 +30,17 @@ class DateTimeBottomDialog {
                     child: Card(
                       color: Theme.of(context).colorScheme.primary,
                       elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       child: Padding(
                         padding: const EdgeInsets.all(4),
-                        child: Icon(Ionicons.close,color: Theme.of(context).colorScheme.secondary,size: 18),
+                        child: Icon(Ionicons.close, color: Theme.of(context).colorScheme.secondary, size: 18),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       alignment: Alignment.center,
-                      child: Text("Heure",style: TextStyle(color: Theme.of(context).colorScheme.primary,fontSize: 14,fontWeight: FontWeight.bold)),
+                      child: Text("Heure", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -67,7 +63,7 @@ class DateTimeBottomDialog {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: GestureDetector(
-                onTap: () { 
+                onTap: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 },
@@ -75,12 +71,10 @@ class DateTimeBottomDialog {
                   child: Card(
                     color: Theme.of(context).colorScheme.primary,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: Text("Valider",style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 14,fontWeight: FontWeight.bold)),
+                      child: Text("Valider", style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SportCard extends StatelessWidget {
-
   final String text;
   final IconData icon;
   final Color iconColor;
@@ -17,9 +16,9 @@ class SportCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Row(
-          children:  [
+          children: [
             Padding(
               padding: const EdgeInsets.only(right: 5),
               child: Card(
@@ -30,11 +29,11 @@ class SportCard extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Icon(icon,size: 50,color: iconColor),
+                  child: Icon(icon, size: 50, color: iconColor),
                 ),
               ),
             ),
-            Expanded(child: Text(text,style: TextStyle(color: Theme.of(context).colorScheme.primary,fontSize: 20,fontWeight: FontWeight.bold))),
+            Expanded(child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),
       ),
