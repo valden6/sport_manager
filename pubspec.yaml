@@ -21,6 +21,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   audioplayers: ^4.1.0
+  geolocator: ^9.0.2
+  flutter_tts: ^3.7.0
 
 dev_dependencies:
   flutter_test:

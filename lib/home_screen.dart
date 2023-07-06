@@ -4,11 +4,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sport_manager/enumerations/tennis_activity_type.dart';
 import 'package:sport_manager/services/dance_service.dart';
+import 'package:sport_manager/services/location_service.dart';
 import 'package:sport_manager/services/tennis_service.dart';
 import 'package:sport_manager/settings/global_storage.dart';
 import 'package:sport_manager/widgets/date_time_card.dart';
@@ -43,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int time = 0;
   Timer? timer;
 
+  final List<Position> locations = [];
+  FlutterTts textTospeech = FlutterTts();
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     });
     getWeightInStorage();
+    initializeTextToSpeech();
   }
 
   @override
@@ -75,6 +82,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
   }
 
+  Future<void> initializeTextToSpeech() async {
+    await textTospeech.setIosAudioCategory(
+      IosTextToSpeechAudioCategory.ambient,
+      [
+        IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+        IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+        IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+      ],
+      IosTextToSpeechAudioMode.voicePrompt,
+    );
+    if (await textTospeech.isLanguageAvailable("fr-FR") == true) {
+      await textTospeech.setLanguage("fr-FR");
+    }
+  }
+
   void setDateTimeSession(bool endDate, DateTime? dateChoose) {
     if (endDate) {
       setState(() {
@@ -87,6 +109,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> recordLocation() async {
+    final Position newLocation = await locationService.getPosition();
+    locations.add(newLocation);
+  }
+
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (rest && time == 60) {
@@ -95,9 +122,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         rest = false;
       } else if (!rest && time == 4 * 60) {
         audioPlayer.play(AssetSource("audio/rest.m4a"));
+        if (locations.isNotEmpty && locations.last.speed != -1) {
+          textTospeech.speak("${locations.last.speed * 3.6} kilomètre heure");
+        }
         time = 0;
         rest = true;
       }
+
+      if (totalTime % 10 == 0) {
+        recordLocation();
+      }
+
       setState(() {
         totalTime++;
         time++;
@@ -114,6 +149,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         totalTime = 0;
         time = 0;
         timer = null;
+        locations.clear();
       });
     }
   }
@@ -383,6 +419,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Column(
                                         children: [
+                                          Text(locations.isNotEmpty ? "${locations.last.speed} m/s" : "-- m/s", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold)),
                                           Text(showTimer(seconde: time, showHours: false), style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 50, fontWeight: FontWeight.bold)),
                                           Text(showTimer(seconde: totalTime), style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold)),
                                         ],

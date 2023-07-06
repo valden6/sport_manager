@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:health/health.dart';
 import 'package:sport_manager/services/app_service.dart';
 import 'package:sport_manager/settings/global_storage.dart';
