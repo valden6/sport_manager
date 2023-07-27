@@ -47,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Timer? timer;
 
   final List<Position> locations = [];
+  final List<Position> oneRunlocations = [];
+  double averageSpeed = 0;
   FlutterTts textTospeech = FlutterTts();
 
   @override
@@ -112,18 +114,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<void> recordLocation() async {
     final Position newLocation = await locationService.getPosition();
     locations.add(newLocation);
+    oneRunlocations.add(newLocation);
   }
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (rest && time == 60) {
         audioPlayer.play(AssetSource("audio/run.m4a"));
+        oneRunlocations.clear();
         time = 0;
         rest = false;
       } else if (!rest && time == 4 * 60) {
         audioPlayer.play(AssetSource("audio/rest.m4a"));
-        if (locations.isNotEmpty && locations.last.speed != -1) {
-          textTospeech.speak("${locations.last.speed * 3.6} kilomètre heure");
+        double averageSpeed = 0;
+        for (final Position oneRunLocation in oneRunlocations) {
+          averageSpeed += oneRunLocation.speed;
+        }
+        averageSpeed = averageSpeed / oneRunlocations.length;
+        if (locations.isNotEmpty && averageSpeed != 0) {
+          textTospeech.speak("${(averageSpeed * 3.6).toStringAsFixed(2)} kilomètre heure");
         }
         time = 0;
         rest = true;
