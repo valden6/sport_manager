@@ -15,8 +15,8 @@ class DanceService {
 
     final DateTime monday = appService.getDay(now.subtract(Duration(days: now.weekday - 1)));
     final DateTime wednesday = appService.getDay(monday.add(const Duration(days: 2)));
-    beginningTennisSession = wednesday.add(const Duration(hours: 19, minutes: 30));
-    endTennisSession = wednesday.add(const Duration(hours: 20, minutes: 30));
+    beginningTennisSession = wednesday.add(const Duration(hours: 20, minutes: 30));
+    endTennisSession = wednesday.add(const Duration(hours: 21, minutes: 30));
 
     const double met = 5.5;
     final double kcalBurnedPerMin = (met * weight * 3.5) / 200;
