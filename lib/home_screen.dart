@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sport_manager/enumerations/tennis_activity_type.dart';
 import 'package:sport_manager/services/dance_service.dart';
 import 'package:sport_manager/services/location_service.dart';
+import 'package:sport_manager/services/notification_service.dart';
 import 'package:sport_manager/services/tennis_service.dart';
 import 'package:sport_manager/settings/global_storage.dart';
 import 'package:sport_manager/widgets/date_time_card.dart';
@@ -51,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   double averageSpeed = 0;
   FlutterTts textTospeech = FlutterTts();
 
+  bool notificationEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
     getWeightInStorage();
     initializeTextToSpeech();
+    _initNotificationSettings();
   }
 
   @override
@@ -96,6 +101,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
     if (await textTospeech.isLanguageAvailable("fr-FR") == true) {
       await textTospeech.setLanguage("fr-FR");
+    }
+  }
+
+  Future<void> _initNotificationSettings() async {
+    final String? notificationSettingStorage = await notificationSetting.getNotificationSetting();
+    if (notificationSettingStorage != null && notificationSettingStorage == "true") {
+      notificationEnabled = true;
+    } else {
+      notificationEnabled = false;
     }
   }
 
@@ -177,6 +191,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> setNotificationTime() async {
+    await NotificationService.showScheduledNotification(
+      title: "C'est l'heure !",
+      body: "Ajoute ton cours de danse 🕺",
+      time: const TimeOfDay(hour: 21, minute: 45),
+      day: DateTime.wednesday,
+    );
+    await NotificationService.showScheduledNotification(
+      id: 1,
+      title: "C'est l'heure !",
+      body: "Ajoute ton cours de tennis 🎾",
+      time: const TimeOfDay(hour: 22, minute: 45),
+      day: DateTime.thursday,
+    );
+    await notificationSetting.setNotificationSetting(activated: true);
+    if (mounted) {
+      setState(() {
+        notificationEnabled = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,8 +227,46 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 10),
-                    child: Text("Sporty", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 25, fontWeight: FontWeight.bold, fontFamily: GoogleFonts.kanit().fontFamily)),
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 45,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("Sporty", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 25, fontWeight: FontWeight.bold, fontFamily: GoogleFonts.kanit().fontFamily)),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () async {
+                              HapticFeedback.lightImpact();
+                              if (!notificationEnabled) {
+                                setNotificationTime();
+                              } else {
+                                NotificationService.cancelAll();
+                                notificationSetting.setNotificationSetting(activated: false);
+                                setState(() {
+                                  notificationEnabled = false;
+                                });
+                              }
+                            },
+                            child: Card(
+                              color: Theme.of(context).colorScheme.secondary,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(notificationEnabled ? IconlyBold.notification : IconlyLight.notification, color: Theme.of(context).colorScheme.primary, size: 22),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30, bottom: 10),
@@ -204,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           padding: const EdgeInsets.only(left: 15, right: 5),
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Theme.of(context).primaryColor),
-                            width: 50,
+                            width: 70,
                             height: 45,
                             child: TextField(
                               onSubmitted: (String newWeight) {
@@ -231,7 +305,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   borderRadius: BorderRadius.circular(4),
                                   borderSide: BorderSide.none,
                                 ),
-                                hintText: "- -",
                                 hintStyle: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w400),
                               ),
                             ),

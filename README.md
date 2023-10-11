@@ -17,6 +17,8 @@ If you have ideas to improves the app, feel free to make a request.
         • Java version Java(TM) SE Runtime Environment (build 1.8.0_331-b09)
 
 ## Version
+## [1.3.0] 
+Adding push notifications
 ### [1.2.2] 
 Fix dance hours
 ### [1.2.1] 
