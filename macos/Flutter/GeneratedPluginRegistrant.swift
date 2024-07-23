@@ -9,7 +9,7 @@ import audioplayers_darwin
 import device_info_plus
 import flutter_app_badger
 import flutter_local_notifications
-import flutter_native_timezone
+import flutter_native_timezone_updated_gradle
 import flutter_tts
 import geolocator_apple
 import path_provider_foundation

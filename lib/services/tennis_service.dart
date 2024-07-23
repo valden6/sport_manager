@@ -10,7 +10,7 @@ class TennisService {
     DateTime endTennisSession;
     double hoursPlayed = 1;
     final DateTime now = DateTime.now();
-    HealthFactory health = HealthFactory();
+    Health health = Health();
     final bool authorization = await appService.requestAuthorization();
     final double weight = await weightStorage.getWeight() ?? 70;
 
@@ -45,11 +45,17 @@ class TennisService {
     // log("TotalSteps: $totalSteps");
     // log("TotalMeters: $totalMeters");
     if (authorization) {
-      final bool writeHealthDataDone1 = await health.writeHealthData(totalSteps, HealthDataType.STEPS, beginningTennisSession, endTennisSession);
-      final bool writeHealthDataDone2 = await health.writeHealthData(totalKcalBurned.toDouble(), HealthDataType.ACTIVE_ENERGY_BURNED, beginningTennisSession, endTennisSession, unit: HealthDataUnit.KILOCALORIE);
-      final bool writeHealthDataDone3 = await health.writeHealthData(totalMeters.toDouble(), HealthDataType.DISTANCE_WALKING_RUNNING, beginningTennisSession, endTennisSession, unit: HealthDataUnit.METER);
-      final bool writeWorkoutDataDone = await health.writeWorkoutData(HealthWorkoutActivityType.TENNIS, beginningTennisSession, endTennisSession,
-          totalEnergyBurned: totalKcalBurned, totalEnergyBurnedUnit: HealthDataUnit.KILOCALORIE, totalDistance: totalMeters, totalDistanceUnit: HealthDataUnit.METER);
+      final bool writeHealthDataDone1 = await health.writeHealthData(value: totalSteps, type: HealthDataType.STEPS, startTime: beginningTennisSession, endTime: endTennisSession);
+      final bool writeHealthDataDone2 = await health.writeHealthData(value: totalKcalBurned.toDouble(), type: HealthDataType.ACTIVE_ENERGY_BURNED, startTime: beginningTennisSession, endTime: endTennisSession, unit: HealthDataUnit.KILOCALORIE);
+      final bool writeHealthDataDone3 = await health.writeHealthData(value: totalMeters.toDouble(), type: HealthDataType.DISTANCE_WALKING_RUNNING, startTime: beginningTennisSession, endTime: endTennisSession, unit: HealthDataUnit.METER);
+      final bool writeWorkoutDataDone = await health.writeWorkoutData(
+          activityType: HealthWorkoutActivityType.TENNIS,
+          start: beginningTennisSession,
+          end: endTennisSession,
+          totalEnergyBurned: totalKcalBurned,
+          totalEnergyBurnedUnit: HealthDataUnit.KILOCALORIE,
+          totalDistance: totalMeters,
+          totalDistanceUnit: HealthDataUnit.METER);
       if (writeHealthDataDone1 && writeHealthDataDone2 && writeHealthDataDone3 && writeWorkoutDataDone) {
         success = true;
       }

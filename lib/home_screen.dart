@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Stack(
         children: [
           SafeArea(
@@ -395,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
                                 child: Card(
                                   elevation: 0,
-                                  color: Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).colorScheme.surface,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
@@ -459,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           },
                                           child: Card(
                                             elevation: 0,
-                                            color: Theme.of(context).colorScheme.background,
+                                            color: Theme.of(context).colorScheme.surface,
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(15),
                                             ),
@@ -522,7 +522,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         },
                                         child: Card(
                                           elevation: 0,
-                                          color: Theme.of(context).colorScheme.background,
+                                          color: Theme.of(context).colorScheme.surface,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(15),
                                           ),
@@ -544,7 +544,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         },
                                         child: Card(
                                           elevation: 0,
-                                          color: Theme.of(context).colorScheme.background,
+                                          color: Theme.of(context).colorScheme.surface,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(15),
                                           ),
@@ -558,7 +558,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         },
                                         child: Card(
                                           elevation: 0,
-                                          color: Theme.of(context).colorScheme.background,
+                                          color: Theme.of(context).colorScheme.surface,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(15),
                                           ),
