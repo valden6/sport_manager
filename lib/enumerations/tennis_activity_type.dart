@@ -1,8 +1,6 @@
-enum TennisActivityType {
-  double,
-  simple,
-  lessons,
-}
+import 'package:sport_manager/enumerations/sport_type.dart';
+
+enum TennisActivityType { double, simple, lessons }
 
 extension TennisActivityTypeExtension on TennisActivityType {
   String get name {
@@ -16,25 +14,19 @@ extension TennisActivityTypeExtension on TennisActivityType {
     }
   }
 
-  double get met {
+  SportType get sportType {
     switch (this) {
       case TennisActivityType.lessons:
-        return 7.3;
+        return SportType.tennisLessons;
       case TennisActivityType.simple:
-        return 8;
+        return SportType.tennisSimple;
       case TennisActivityType.double:
-        return 6;
+        return SportType.tennisDouble;
     }
   }
 
-  int get stepsPerMin {
-    switch (this) {
-      case TennisActivityType.lessons:
-        return 180;
-      case TennisActivityType.simple:
-        return 200;
-      case TennisActivityType.double:
-        return 133;
-    }
-  }
+  double get met => sportType.met;
+
+  int get stepsPerMin => sportType.stepsPerMin;
 }
+

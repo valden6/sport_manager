@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:health/health.dart';
+import 'package:sport_manager/enumerations/sport_type.dart';
 import 'package:sport_manager/services/app_service.dart';
+import 'package:sport_manager/services/calorie_service.dart';
 import 'package:sport_manager/settings/global_storage.dart';
 
 class DanceService {
@@ -18,11 +20,10 @@ class DanceService {
     beginningTennisSession = wednesday.add(const Duration(hours: 20, minutes: 30));
     endTennisSession = wednesday.add(const Duration(hours: 21, minutes: 30));
 
-    const double met = 5.5;
-    final double kcalBurnedPerMin = (met * weight * 3.5) / 200;
-    final int totalKcalBurned = ((1 * 60) * kcalBurnedPerMin).round();
-    const double totalSteps = ((1 * 60) * 109);
-    final int totalMeters = (totalSteps * 0.762).round();
+    const SportType sportType = SportType.dance;
+    final int totalKcalBurned = calorieService.totalKcalBurned(met: sportType.met, weight: weight, minutes: 60);
+    final double totalSteps = calorieService.totalSteps(minutes: 60, stepsPerMin: sportType.stepsPerMin);
+    final int totalMeters = calorieService.totalMeters(steps: totalSteps);
     // log("beginningSession: $beginningTennisSession");
     // log("endSession: $endTennisSession");
     // log("kcalBurned per minute: $kcalBurnedPerMin");
@@ -30,17 +31,35 @@ class DanceService {
     // log("TotalSteps: $totalSteps");
     // log("TotalMeters: $totalMeters");
     if (authorization && Platform.isIOS) {
-      final bool writeHealthDataDone1 = await health.writeHealthData(value: totalSteps, type: HealthDataType.STEPS, startTime: beginningTennisSession, endTime: endTennisSession);
-      final bool writeHealthDataDone2 = await health.writeHealthData(value: totalKcalBurned.toDouble(), type: HealthDataType.ACTIVE_ENERGY_BURNED, startTime: beginningTennisSession, endTime: endTennisSession, unit: HealthDataUnit.KILOCALORIE);
-      final bool writeHealthDataDone3 = await health.writeHealthData(value: totalMeters.toDouble(), type: HealthDataType.DISTANCE_WALKING_RUNNING, startTime: beginningTennisSession, endTime: endTennisSession, unit: HealthDataUnit.METER);
+      final bool writeHealthDataDone1 = await health.writeHealthData(
+        value: totalSteps,
+        type: HealthDataType.STEPS,
+        startTime: beginningTennisSession,
+        endTime: endTennisSession,
+      );
+      final bool writeHealthDataDone2 = await health.writeHealthData(
+        value: totalKcalBurned.toDouble(),
+        type: HealthDataType.ACTIVE_ENERGY_BURNED,
+        startTime: beginningTennisSession,
+        endTime: endTennisSession,
+        unit: HealthDataUnit.KILOCALORIE,
+      );
+      final bool writeHealthDataDone3 = await health.writeHealthData(
+        value: totalMeters.toDouble(),
+        type: HealthDataType.DISTANCE_WALKING_RUNNING,
+        startTime: beginningTennisSession,
+        endTime: endTennisSession,
+        unit: HealthDataUnit.METER,
+      );
       final bool writeWorkoutDataDone = await health.writeWorkoutData(
-          activityType: HealthWorkoutActivityType.WALKING,
-          start: beginningTennisSession,
-          end: endTennisSession,
-          totalEnergyBurned: totalKcalBurned,
-          totalEnergyBurnedUnit: HealthDataUnit.KILOCALORIE,
-          totalDistance: totalMeters,
-          totalDistanceUnit: HealthDataUnit.METER);
+        activityType: sportType.healthWorkoutActivityType,
+        start: beginningTennisSession,
+        end: endTennisSession,
+        totalEnergyBurned: totalKcalBurned,
+        totalEnergyBurnedUnit: HealthDataUnit.KILOCALORIE,
+        totalDistance: totalMeters,
+        totalDistanceUnit: HealthDataUnit.METER,
+      );
       if (writeHealthDataDone1 && writeHealthDataDone2 && writeHealthDataDone3 && writeWorkoutDataDone) {
         success = true;
       }

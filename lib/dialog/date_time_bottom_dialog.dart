@@ -11,9 +11,7 @@ class DateTimeBottomDialog {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       builder: (BuildContext context) {
         return Wrap(
           children: [
@@ -74,13 +72,16 @@ class DateTimeBottomDialog {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: Text("Valider", style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 14, fontWeight: FontWeight.bold)),
+                      child: Text(
+                        "Valider",
+                        style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 50))
+            const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
           ],
         );
       },

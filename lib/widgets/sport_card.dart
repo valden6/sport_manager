@@ -4,8 +4,9 @@ class SportCard extends StatelessWidget {
   final String text;
   final IconData icon;
   final Color iconColor;
+  final bool selected;
 
-  const SportCard({super.key, required this.text, required this.icon, required this.iconColor});
+  const SportCard({super.key, required this.text, required this.icon, required this.iconColor, required this.selected});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class SportCard extends StatelessWidget {
       color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).primaryColor),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -23,14 +25,9 @@ class SportCard extends StatelessWidget {
               padding: const EdgeInsets.only(right: 5),
               child: Card(
                 elevation: 0,
-                color: iconColor.withOpacity(0.2),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(icon, size: 50, color: iconColor),
-                ),
+                color: iconColor.withValues(alpha: 0.2),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                child: Padding(padding: const EdgeInsets.all(8), child: Icon(icon, size: 50, color: iconColor)),
               ),
             ),
             Expanded(child: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 20, fontWeight: FontWeight.bold))),

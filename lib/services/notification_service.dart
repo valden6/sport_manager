@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone_updated_gradle/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -34,34 +34,40 @@ class NotificationService {
     }
 
     await _notifications.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
         onNotifications.add(notificationResponse.payload);
       },
     );
 
     if (initShcheduled) {
-      final String locationName = await FlutterNativeTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(locationName));
+      final TimezoneInfo localTimezone = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(localTimezone.identifier));
     }
   }
 
   static Future<void> showNotification({int id = 0, String? title, String? body, String? payload}) async {
-    _notifications.show(id, title, body, await _notificationDetails(), payload: payload);
+    _notifications.show(id: id, title: title, body: body, notificationDetails: await _notificationDetails(), payload: payload);
   }
 
-  static Future<void> showScheduledNotification({int id = 0, String? title, String? body, String? payload, required TimeOfDay time, required int day}) async {
+  static Future<void> showScheduledNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+    required TimeOfDay time,
+    required int day,
+  }) async {
     final tz.TZDateTime scheduledDate = _scheduleWeekly(time: time, day: day);
 
     _notifications.zonedSchedule(
-      id, // choose for each notification an index that is unique
-      title,
-      body,
-      scheduledDate,
-      await _notificationDetails(),
+      id: id, // choose for each notification an index that is unique
+      title: title,
+      body: body,
+      scheduledDate: scheduledDate,
+      notificationDetails: await _notificationDetails(),
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
     );
   }
@@ -82,7 +88,7 @@ class NotificationService {
     return scheduledDate.isBefore(now) ? scheduledDate.add(const Duration(days: 1)) : scheduledDate;
   }
 
-  static void cancel({required int id}) => _notifications.cancel(id);
+  static void cancel({required int id}) => _notifications.cancel(id: id);
 
   static void cancelAll() => _notifications.cancelAll();
 
