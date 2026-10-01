@@ -231,7 +231,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       jumpRopeEffortSeconds = 0;
       jumpRopeCycles = 0;
     });
-    if (totalJumpRopeTime > 0 && beginningJumpRopeSession != null) {
+    // Ne pas envoyer à Health une session de moins de 10 secondes
+    if (totalJumpRopeTime >= 10 && beginningJumpRopeSession != null) {
       HapticFeedback.lightImpact();
       final bool success = await jumpRopeService.addJumpRopeData(
         beginningSession: beginningJumpRopeSession,

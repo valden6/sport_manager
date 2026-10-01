@@ -25,6 +25,10 @@ If you have ideas to improves the app, feel free to make a request.
         • Java version OpenJDK Runtime Environment (build 23.0.2)
 
 ## Version
+## [1.5.1]
+### Fix
+- Not sending jump rope sessions shorter than 10 seconds to Apple Health
+
 ## [1.5.0] 
 ### New features
 - Adding **home workouts** ("Sport à la maison"): full new flow (program list → detail → activity → rest → success screen) with exercises by repetition or duration, instructions bottom dialog, step progress indicator and a "Bravo" success screen with a Lottie victory animation
