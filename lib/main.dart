@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sport_manager/screens/home_screen.dart';
 import 'package:sport_manager/services/notification_service.dart';
@@ -9,9 +9,9 @@ import 'package:timezone/data/latest.dart' as tz;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
-  // if (await FlutterAppBadger.isAppBadgeSupported()) { // Trouver un remplacent pour ce package qui n'est plus maintenu
-  //   FlutterAppBadger.removeBadge();
-  // }
+  if (await AppBadgePlus.isSupported()) {
+    AppBadgePlus.updateBadge(0);
+  }
   runApp(const SportyApp());
 }
 

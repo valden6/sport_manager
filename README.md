@@ -25,6 +25,13 @@ If you have ideas to improves the app, feel free to make a request.
         • Java version OpenJDK Runtime Environment (build 23.0.2)
 
 ## Version
+## [1.5.2]
+### New features
+- Adding **app badge** (app_badge_plus) to display/update the app icon badge on iOS, Android and macOS
+
+### Upgrade
+- Replacing flutter_app_badger (no longer maintained) with app_badge_plus
+
 ## [1.5.1]
 ### Fix
 - Not sending jump rope sessions shorter than 10 seconds to Apple Health
